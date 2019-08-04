@@ -1,0 +1,18 @@
+<selector
+    xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_pressed="true" > <!--按下的图形-->
+        <shape android:shape="oval" >
+            <solid android:color="#999999" />
+            <stroke android:color="#000000" android:width="2px" />
+            <corners android:radius="10px"/>
+            <size android:width="30px" android:height="30px"/>
+        </shape>
+    </item>
+    <item android:state_pressed="false" > <!--未按下的图形-->
+        <shape android:shape="oval">
+            <solid android:color="#0000ff" />
+            <corners android:radius="10px"/>
+            <size android:width="30px" android:height="30px"/>
+        </shape>
+    </item>
+</selector>
