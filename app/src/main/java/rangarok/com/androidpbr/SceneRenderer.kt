@@ -13,7 +13,7 @@ class SceneRenderer(context: Context) {
     private var sceneWidth = 0
     private var sceneHeight = 0
 
-    private val pbrShader: Shader = Shader(PbrVs, PbrFs)
+    private val pbrShader: Shader = Shader(PbrVs, PbrWithIrradianceIBLFs)
     private val sphereRenderer = SphereRenderer()
     private val cubeRenderer = CubeRenderer()
     private val triangleRenderer = TriangleRenderer()
@@ -24,6 +24,8 @@ class SceneRenderer(context: Context) {
 
     private var metallic = 0.5f
     private var roughness = 0.5f
+
+    private var irradianceTexture = IrradianceTexture(context)
 
 
     fun drawFrame(sceneWidth: Int, sceneHeight: Int) {
@@ -40,6 +42,8 @@ class SceneRenderer(context: Context) {
         drawPBRSphere(projection, view)
 
         skybox.render(projection, Mat4(Mat3(view)))
+
+        cleanup()
 
     }
 
@@ -73,10 +77,19 @@ class SceneRenderer(context: Context) {
             pbrShader.setVec3("lightPositions[$i]", LightPositions[i])
             pbrShader.setVec3("lightColors[$i]", LightColors[i])
         }
+        irradianceTexture.active(pbrShader)
 
         sphereRenderer.render()
+
+        cleanup()
     }
 
+
+    private fun cleanup() {
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER,0)
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
+        GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, 0)
+    }
 
     companion object {
         const val TAG = "SceneRenderer"
