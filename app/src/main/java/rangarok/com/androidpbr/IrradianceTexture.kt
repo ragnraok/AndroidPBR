@@ -29,12 +29,7 @@ class IrradianceTexture(context: Context) {
         )
 
         for (i in 0 until cubemapFaceMap.size) {
-//            val bitmap = cubemapFaceMap[i]
-//            val buffer = ByteBuffer.allocateDirect(bitmap.byteCount).order(ByteOrder.nativeOrder())
-//            bitmap.copyPixelsToBuffer(buffer)
-//            GLES30.glTexImage2D(GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GLES30.GL_RGB16F, bitmap.width, bitmap.height, 0, GLES30.GL_RGB, GLES30.GL_FLOAT, buffer)
-
-            Log.i(TAG, "internal format:${GLUtils.getInternalFormat(cubemapFaceMap[i])}")
+            Log.i(TAG, "internal format:${GLUtils.getInternalFormat(cubemapFaceMap[i])}, $i")
             GLUtils.texImage2D(GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, cubemapFaceMap[i], 0)
         }
 
@@ -66,7 +61,7 @@ class IrradianceTexture(context: Context) {
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, 0)
 
-        Log.i(TAG, "init irrandiance texture finish: $texId")
+        Log.i(TAG, "init irradiance texture finish: $texId")
     }
 
     fun texId(): Int {
@@ -76,6 +71,7 @@ class IrradianceTexture(context: Context) {
     fun active(pbrShader: Shader) {
         pbrShader.setInt("irradianceMap", 0)
 
+        // irradianceMpa use uniform texture 0
         GLES30.glActiveTexture(0)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
     }

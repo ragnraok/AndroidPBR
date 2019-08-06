@@ -26,6 +26,8 @@ class SceneRenderer(context: Context) {
     private var roughness = 0.5f
 
     private var irradianceTexture = IrradianceTexture(context)
+    private var radianceTexture = RadianceTexture(context)
+    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
 
     fun drawFrame(sceneWidth: Int, sceneHeight: Int) {
@@ -62,7 +64,7 @@ class SceneRenderer(context: Context) {
     private fun drawPBRSphere(projection: Mat4, view: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         pbrShader.enable()
-        pbrShader.setVec3("albedo", Vec3(0.5, 0.0, 0.0))
+        pbrShader.setVec3("albedo", Vec3(0.5, 0.2, 0.2))
         pbrShader.setFloat("ao", 1.0f)
         pbrShader.setMat4("projection", projection)
         pbrShader.setMat4("view", view)

@@ -227,3 +227,5 @@ val SkyBoxVertices = floatArrayOf(
     -1.0f, -1.0f,  1.0f,
     1.0f, -1.0f,  1.0f
 )
+
+const val RadianceMipmapLevel = 7
