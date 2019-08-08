@@ -4,7 +4,6 @@ import android.opengl.GLES30
 import android.util.Log
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.FloatBuffer
 
 class CubeRenderer : PrimitiveRenderer {
 
@@ -13,13 +12,9 @@ class CubeRenderer : PrimitiveRenderer {
 
     override fun render() {
         if (cubeVAO == 0) {
-            val cubeVAOArray = intArrayOf(0)
-            GLES30.glGenVertexArrays(1, cubeVAOArray, 0)
-            cubeVAO = cubeVAOArray[0]
+            cubeVAO = genVAO()
 
-            val cubeVBOArray = intArrayOf(0)
-            GLES30.glGenBuffers(1, cubeVBOArray, 0)
-            cubeVBO = cubeVBOArray[0]
+            cubeVBO = genBuffer()
 
             // fill buffer
             GLES30.glBindVertexArray(cubeVAO)

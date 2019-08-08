@@ -34,8 +34,8 @@ class SceneRenderer(context: Context) {
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
 
-        GLES30.glClearColor(0f, 0f, 0.1f, 1.0f)
-        GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
+        viewport(sceneWidth, sceneHeight)
+        clearGL()
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
 
         val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 20.0f)

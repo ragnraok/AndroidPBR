@@ -40,31 +40,7 @@ class RadianceTexture(context: Context) {
             }
         }
 
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_CUBE_MAP,
-            GLES30.GL_TEXTURE_MIN_FILTER,
-            GLES30.GL_LINEAR_MIPMAP_LINEAR
-        )
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_CUBE_MAP,
-            GLES30.GL_TEXTURE_MAG_FILTER,
-            GLES30.GL_LINEAR
-        )
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_CUBE_MAP,
-            GLES30.GL_TEXTURE_WRAP_R,
-            GLES30.GL_CLAMP_TO_EDGE
-        )
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_CUBE_MAP,
-            GLES30.GL_TEXTURE_WRAP_S,
-            GLES30.GL_CLAMP_TO_EDGE
-        )
-        GLES30.glTexParameteri(
-            GLES30.GL_TEXTURE_CUBE_MAP,
-            GLES30.GL_TEXTURE_WRAP_T,
-            GLES30.GL_CLAMP_TO_EDGE
-        )
+        setCubemapTexParam(true)
 
         GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
 

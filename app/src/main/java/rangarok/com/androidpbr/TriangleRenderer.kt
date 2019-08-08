@@ -12,14 +12,10 @@ class TriangleRenderer : PrimitiveRenderer {
 
     override fun render() {
         if (vao == 0) {
-            val vaoArray = intArrayOf(0)
-            GLES30.glGenBuffers(1, vaoArray, 0)
-            vao = vaoArray[0]
+            vao = genVAO()
 
-            val vboArray = intArrayOf(0)
-            var vbo = 0
-            GLES30.glGenBuffers(1, vboArray, 0)
-            vbo = vboArray[0]
+
+            val vbo = genBuffer()
 
             GLES30.glBindVertexArray(vao)
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vbo)

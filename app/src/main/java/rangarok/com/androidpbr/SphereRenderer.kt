@@ -20,16 +20,10 @@ class SphereRenderer : PrimitiveRenderer {
 
     override fun render() {
         if (sphereVAO == 0) {
-            val sphereVaoArrary = intArrayOf(1)
-            GLES30.glGenVertexArrays(1, sphereVaoArrary, 0)
-            sphereVAO = sphereVaoArrary[0]
+            sphereVAO = genVAO()
 
-            val vboArray = intArrayOf(1)
-            val eboArray = intArrayOf(1)
-            GLES30.glGenBuffers(1, vboArray, 0)
-            GLES30.glGenBuffers(1, eboArray, 0)
-            val vbo = vboArray[0]
-            val ebo = eboArray[0]
+            val vbo = genBuffer()
+            val ebo = genBuffer()
 
             val positions: ArrayList<Vec3> = arrayListOf()
             val uvs: ArrayList<Vec2> = arrayListOf()

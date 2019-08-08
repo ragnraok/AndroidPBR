@@ -229,3 +229,5 @@ val SkyBoxVertices = floatArrayOf(
 )
 
 const val RadianceMipmapLevel = 7
+
+const val EnvBrdfTextureSize = 512
