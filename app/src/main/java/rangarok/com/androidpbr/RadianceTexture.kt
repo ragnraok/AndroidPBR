@@ -53,7 +53,7 @@ class RadianceTexture(context: Context) {
         pbrShader.setInt("radianceMap", 1)
 
         // radianceMap use uniform texture 1
-        GLES30.glActiveTexture(1)
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE1)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
     }
     companion object {

@@ -4,6 +4,7 @@ import android.Manifest
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import kotlin.math.max
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 
         roughnessSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                drawView?.setRougness(progress / 100.0f)
+                drawView?.setRougness(max(progress / 100.0f, 0.1f))
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -39,7 +40,7 @@ class MainActivity : AppCompatActivity() {
 
         metallicSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                drawView?.setMetallic(progress / 100.0f)
+                drawView?.setMetallic(max(progress / 100.0f, 0.1f))
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {

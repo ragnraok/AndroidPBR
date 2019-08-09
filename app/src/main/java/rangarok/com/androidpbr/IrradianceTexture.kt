@@ -48,7 +48,7 @@ class IrradianceTexture(context: Context) {
         pbrShader.setInt("irradianceMap", 0)
 
         // irradianceMpa use uniform texture 0
-        GLES30.glActiveTexture(0)
+        GLES30.glActiveTexture(GLES30.GL_TEXTURE0)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
     }
 

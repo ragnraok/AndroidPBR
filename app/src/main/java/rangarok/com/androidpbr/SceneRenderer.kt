@@ -13,14 +13,14 @@ class SceneRenderer(context: Context) {
     private var sceneWidth = 0
     private var sceneHeight = 0
 
-    private val pbrShader: Shader = Shader(PbrVs, PbrWithIrradianceIBLFs)
+    private val pbrShader: Shader = Shader(PbrVs, PbrWithSpecularRadianceIBLFs)
     private val sphereRenderer = SphereRenderer()
     private val cubeRenderer = CubeRenderer()
     private val triangleRenderer = TriangleRenderer()
 
     private val skybox = Skybox().apply { init(context) }
 
-    private val camera = Camera(Vec3(5, 2, 5))
+    private val camera = Camera(Vec3(0, 0, 5))
 
     private var metallic = 0.5f
     private var roughness = 0.5f
@@ -38,7 +38,7 @@ class SceneRenderer(context: Context) {
         clearGL()
         GLES30.glEnable(GLES30.GL_DEPTH_TEST)
 
-        val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 20.0f)
+        val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 200.0f)
         val view = camera.lookAt(Vec3(0))
 
         drawPBRSphere(projection, view)
@@ -64,7 +64,7 @@ class SceneRenderer(context: Context) {
     private fun drawPBRSphere(projection: Mat4, view: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         pbrShader.enable()
-        pbrShader.setVec3("albedo", Vec3(0.5, 0.2, 0.2))
+        pbrShader.setVec3("albedo", Vec3(0.5, 0.0, 0.0))
         pbrShader.setFloat("ao", 1.0f)
         pbrShader.setMat4("projection", projection)
         pbrShader.setMat4("view", view)
@@ -80,6 +80,8 @@ class SceneRenderer(context: Context) {
             pbrShader.setVec3("lightColors[$i]", LightColors[i])
         }
         irradianceTexture.active(pbrShader)
+        radianceTexture.active(pbrShader)
+        envBRDFLookUpTexture.active(pbrShader)
 
         sphereRenderer.render()
 
