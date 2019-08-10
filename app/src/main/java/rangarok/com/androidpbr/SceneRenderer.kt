@@ -20,7 +20,7 @@ class SceneRenderer(context: Context) {
 
     private val skybox = Skybox().apply { init(context) }
 
-    private val camera = Camera(Vec3(0, 0, 5))
+    private val camera = Camera(Vec3(5, 2, 3))
 
     private var metallic = 0.5f
     private var roughness = 0.5f
@@ -66,7 +66,7 @@ class SceneRenderer(context: Context) {
     private fun drawPBRSphere(projection: Mat4, view: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         pbrShader.enable()
-        pbrShader.setVec3("albedo", Vec3(0.5, 0.3, 0.2))
+        pbrShader.setVec3("albedo", Vec3(0.5, 0.5, 0.5))
         pbrShader.setFloat("ao", 1.0f)
         pbrShader.setMat4("projection", projection)
         pbrShader.setMat4("view", view)

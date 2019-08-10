@@ -26,6 +26,7 @@ class RadianceTexture(context: Context) {
         }
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
+        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
 
         for (level in 0 until RadianceMipmapLevel) {
             val faceMap = mipmapLevelCubeMapFaceBitmap(level)
@@ -39,10 +40,9 @@ class RadianceTexture(context: Context) {
                 )
             }
         }
+        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
 
         setCubemapTexParam(true)
-
-        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, 0)
 
