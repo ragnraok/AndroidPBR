@@ -3,7 +3,7 @@ package rangarok.com.androidpbr
 import android.opengl.GLES30
 import android.util.Log
 
-class EnvBRDFLookUpTexture {
+class EnvBRDFLookUpTexture(renderToScreen: Boolean = false) {
 
     private var texId = 0
 
@@ -27,17 +27,30 @@ class EnvBRDFLookUpTexture {
         val rbo = rboArray[0]
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texId)
-        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RG16F, EnvBrdfTextureSize, EnvBrdfTextureSize, 0, GLES30.GL_RG, GLES30.GL_FLOAT, null)
+        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RG32F, EnvBrdfTextureSize, EnvBrdfTextureSize, 0, GLES30.GL_RG, GLES30.GL_FLOAT, null)
 
         setup2DTexParam()
 
-        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fbo)
+        if (!renderToScreen) {
+            GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fbo)
 
-        GLES30.glBindRenderbuffer(GLES30.GL_RENDERBUFFER, rbo)
-        GLES30.glRenderbufferStorage(GLES30.GL_RENDERBUFFER, GLES30.GL_DEPTH_COMPONENT24, EnvBrdfTextureSize, EnvBrdfTextureSize)
-        GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_TEXTURE_2D, texId, 0)
+            GLES30.glBindRenderbuffer(GLES30.GL_RENDERBUFFER, rbo)
+            GLES30.glRenderbufferStorage(
+                GLES30.GL_RENDERBUFFER,
+                GLES30.GL_DEPTH_COMPONENT24,
+                EnvBrdfTextureSize,
+                EnvBrdfTextureSize
+            )
+            GLES30.glFramebufferTexture2D(
+                GLES30.GL_FRAMEBUFFER,
+                GLES30.GL_COLOR_ATTACHMENT0,
+                GLES30.GL_TEXTURE_2D,
+                texId,
+                0
+            )
 
-        viewport(EnvBrdfTextureSize, EnvBrdfTextureSize)
+            viewport(EnvBrdfTextureSize, EnvBrdfTextureSize)
+        }
         clearGL()
         quadRenderer.render()
 

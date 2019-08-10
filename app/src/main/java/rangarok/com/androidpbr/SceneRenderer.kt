@@ -47,6 +47,8 @@ class SceneRenderer(context: Context) {
 
         cleanup()
 
+//        renderEnvBrdfLookupTexture()
+
     }
 
     fun setMetallic(metallic: Float) {
@@ -64,7 +66,7 @@ class SceneRenderer(context: Context) {
     private fun drawPBRSphere(projection: Mat4, view: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         pbrShader.enable()
-        pbrShader.setVec3("albedo", Vec3(0.5, 0.0, 0.0))
+        pbrShader.setVec3("albedo", Vec3(0.5, 0.3, 0.2))
         pbrShader.setFloat("ao", 1.0f)
         pbrShader.setMat4("projection", projection)
         pbrShader.setMat4("view", view)
@@ -86,6 +88,10 @@ class SceneRenderer(context: Context) {
         sphereRenderer.render()
 
         cleanup()
+    }
+
+    fun renderEnvBrdfLookupTexture() {
+        EnvBRDFLookUpTexture(renderToScreen = true)
     }
 
 

@@ -529,8 +529,8 @@ const val skyBoxFs = """
 @Language("glsl")
 const val envBrdfVs = """
     #version 300 es
-    in vec3 aPos;
-    in vec2 aTexCoords;
+    layout (location = 0) in vec3 aPos;
+    layout (location = 1) in vec2 aTexCoords;
     
     out vec2 TexCoords;
     
@@ -622,7 +622,7 @@ vec2 IntegrateBRDF(float NdotV, float roughness)
 
     vec3 N = vec3(0.0, 0.0, 1.0);
 
-    const uint SAMPLE_COUNT = 1024u;
+    const uint SAMPLE_COUNT = 512u;
     for(uint i = 0u; i < SAMPLE_COUNT; ++i)
     {
         // generates a sample vector that's biased towards the

@@ -25,6 +25,9 @@ class MainActivity : AppCompatActivity() {
         roughnessSeekbar = findViewById(R.id.roughness_seekbar)
         metallicSeekbar = findViewById(R.id.metallic_seekbar)
 
+        roughnessSeekbar?.progress = 50
+        metallicSeekbar?.progress = 50
+
         roughnessSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
                 drawView?.setRougness(max(progress / 100.0f, 0.1f))

@@ -23,8 +23,6 @@
             style="@android:style/Widget.Holo.SeekBar"
             android:layout_width="250dp"
             android:layout_height="wrap_content"
-            android:progress="50"
-            android:min="30"
             android:max="100"/>
         <TextView
             android:layout_toRightOf="@id/roughness_seekbar"
@@ -39,7 +37,6 @@
             android:layout_width="250dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
-            android:progress="50"
             android:max="100"/>
         <TextView
             android:layout_below="@id/roughness_seekbar"
