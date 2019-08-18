@@ -604,7 +604,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         
         const float MAX_RADIANCE_LOD = 6.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
-        vec3 envBrdf = EnvBrdfCalcFunc(F0, roughness, max(dot(N, V), 0.0));
+        vec3 envBrdf = EnvBrdfCalcFunc(F0, metallic, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
         
         vec3 ambient = (kD * diffuse + specular) * ao;
