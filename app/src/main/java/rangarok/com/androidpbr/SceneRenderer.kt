@@ -13,7 +13,7 @@ class SceneRenderer(context: Context) {
     private var sceneWidth = 0
     private var sceneHeight = 0
 
-    private val pbrShader: Shader = Shader(PbrVs, PbrWithSpecularRadianceIBLFs)
+    private val pbrShader: Shader = Shader(PbrVs, PbrWithSpecularRadianceIBLFAndEnvBrdCalcs)
     private val sphereRenderer = SphereRenderer()
     private val cubeRenderer = CubeRenderer()
     private val triangleRenderer = TriangleRenderer()
@@ -27,7 +27,7 @@ class SceneRenderer(context: Context) {
 
     private var irradianceTexture = IrradianceTexture(context)
     private var radianceTexture = RadianceTexture(context)
-    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
+//    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
 
     fun drawFrame(sceneWidth: Int, sceneHeight: Int) {
@@ -83,7 +83,7 @@ class SceneRenderer(context: Context) {
         }
         irradianceTexture.active(pbrShader)
         radianceTexture.active(pbrShader)
-        envBRDFLookUpTexture.active(pbrShader)
+//        envBRDFLookUpTexture.active(pbrShader)
 
         sphereRenderer.render()
 

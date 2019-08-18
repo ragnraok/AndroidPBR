@@ -7,7 +7,7 @@ class EnvBRDFLookUpTexture(renderToScreen: Boolean = false) {
 
     private var texId = 0
 
-    private val envBrdfShader = Shader(envBrdfVs, envBrdfFs)
+    private val envBrdfShader = Shader(EnvBrdfVs, EnvBrdfFs)
     private val quadRenderer = QuadRenderer()
 
     init {
