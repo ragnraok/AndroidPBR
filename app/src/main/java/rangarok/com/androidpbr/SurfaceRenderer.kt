@@ -36,7 +36,7 @@ class SurfaceRenderer(private val context: Context) : GLSurfaceView.Renderer {
     }
 
     fun setRougness(roughness: Float) {
-        sceneRenderer.setRougness(roughness)
+        sceneRenderer.setRoughness(roughness)
     }
 
     companion object {

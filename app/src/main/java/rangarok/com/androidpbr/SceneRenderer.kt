@@ -15,12 +15,10 @@ class SceneRenderer(context: Context) {
 
     private val pbrShader: Shader = Shader(PbrVs, PbrWithSpecularRadianceIBLFAndEnvBrdCalcs)
     private val sphereRenderer = SphereRenderer()
-    private val cubeRenderer = CubeRenderer()
-    private val triangleRenderer = TriangleRenderer()
 
     private val skybox = Skybox().apply { init(context) }
 
-    private val camera = Camera(Vec3(5, 2, 3))
+    private val camera = Camera(Vec3(0, 3, 5))
 
     private var metallic = 0.5f
     private var roughness = 0.5f
@@ -41,7 +39,7 @@ class SceneRenderer(context: Context) {
         val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 200.0f)
         val view = camera.lookAt(Vec3(0))
 
-        drawPBRSphere(projection, view)
+        renderSphereScene(projection, view)
 
         skybox.render(projection, Mat4(Mat3(view)))
 
@@ -51,19 +49,35 @@ class SceneRenderer(context: Context) {
 
     }
 
+    private fun renderSphereScene(projection: Mat4, view: Mat4) {
+        var model = Mat4(1.0)
+        // center sphere
+        drawPBRSphere(projection, view, model)
+
+        // right sphere
+        model = Mat4(1.0f)
+        model.translate(Vec3(1.5, 0.0, -3.0), model)
+        drawPBRSphere(projection, view, model)
+
+        // left sphere
+        model = Mat4(1.0f)
+        model.translate(Vec3(-1.5, 0.0, -3.0), model)
+        drawPBRSphere(projection, view, model)
+    }
+
     fun setMetallic(metallic: Float) {
         if (metallic in 0.0..1.0) {
             this.metallic = metallic
         }
     }
 
-    fun setRougness(roughness: Float) {
+    fun setRoughness(roughness: Float) {
         if (roughness in 0.0..1.0) {
             this.roughness = roughness
         }
     }
 
-    private fun drawPBRSphere(projection: Mat4, view: Mat4) {
+    private fun drawPBRSphere(projection: Mat4, view: Mat4, model: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         pbrShader.enable()
         pbrShader.setVec3("albedo", Vec3(0.5, 0.5, 0.5))
@@ -74,7 +88,6 @@ class SceneRenderer(context: Context) {
         pbrShader.setFloat("metallic", metallic)
         pbrShader.setFloat("roughness", roughness)
         pbrShader.setVec3("ambient", Vec3(0.1, 0.1, 0.1))
-        val model = Mat4(1.0)
         pbrShader.setMat4("model", model)
 
         for (i in 0 until LightPositions.size) {
