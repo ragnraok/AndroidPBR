@@ -90,7 +90,7 @@ class ObjRender(input: InputStream) : PrimitiveRenderer {
             GLES30.glBindVertexArray(vao)
 
             GLES30.glDrawElements(
-                GLES30.GL_TRIANGLE_STRIP,
+                GLES30.GL_TRIANGLES,
                 indices?.size ?: 0,
                 GLES30.GL_UNSIGNED_INT,
                 0
