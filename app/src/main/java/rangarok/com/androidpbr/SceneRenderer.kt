@@ -18,7 +18,7 @@ class SceneRenderer(context: Context) {
 
     private val skybox = Skybox().apply { init(context) }
 
-    private val camera = Camera(Vec3(0, 3, 5))
+    private val camera = Camera(Vec3(0, 3, 8))
 
     private var metallic = 0.5f
     private var roughness = 0.5f
@@ -27,7 +27,10 @@ class SceneRenderer(context: Context) {
     private var radianceTexture = RadianceTexture(context)
 //    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
+    private var objRenderer = ObjRender(context.assets.open("shader_ball/shader_ball.obj"))
 
+
+    //TODO: fix light spot shape problem
     fun drawFrame(sceneWidth: Int, sceneHeight: Int) {
         this.sceneWidth = sceneWidth
         this.sceneHeight = sceneHeight
@@ -39,7 +42,7 @@ class SceneRenderer(context: Context) {
         val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 200.0f)
         val view = camera.lookAt(Vec3(0))
 
-        renderSphereScene(projection, view)
+        renderShaderBalls(projection, view)
 
         skybox.render(projection, Mat4(Mat3(view)))
 
@@ -65,6 +68,23 @@ class SceneRenderer(context: Context) {
         drawPBRSphere(projection, view, model)
     }
 
+    private fun renderShaderBalls(projection: Mat4, view: Mat4) {
+        var model = Mat4(1.0)
+        model.translate(Vec3(0.0, -1.0, 0.0), model)
+        drawPBRShaderBall(projection, view, model)
+
+        model = Mat4(1.0)
+        model.translate(Vec3(1.5, -1.0, -3.0), model)
+        model.rotate(-100.0f, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRShaderBall(projection, view, model)
+
+        model = Mat4(1.0)
+        model.translate(Vec3(-1.5, -1.0, -3.0), model)
+        model.rotate(100.0f, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRShaderBall(projection, view, model)
+
+    }
+
     fun setMetallic(metallic: Float) {
         if (metallic in 0.0..1.0) {
             this.metallic = metallic
@@ -77,8 +97,7 @@ class SceneRenderer(context: Context) {
         }
     }
 
-    private fun drawPBRSphere(projection: Mat4, view: Mat4, model: Mat4) {
-        Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
+    private fun setUpPBRShader(projection: Mat4, view: Mat4, model: Mat4) {
         pbrShader.enable()
         pbrShader.setVec3("albedo", Vec3(0.5, 0.5, 0.5))
         pbrShader.setFloat("ao", 1.0f)
@@ -96,9 +115,24 @@ class SceneRenderer(context: Context) {
         }
         irradianceTexture.active(pbrShader)
         radianceTexture.active(pbrShader)
+
 //        envBRDFLookUpTexture.active(pbrShader)
+    }
+
+    private fun drawPBRSphere(projection: Mat4, view: Mat4, model: Mat4) {
+        Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
+        setUpPBRShader(projection, view, model)
 
         sphereRenderer.render()
+
+        cleanup()
+    }
+
+    private fun drawPBRShaderBall(projection: Mat4, view: Mat4, model: Mat4) {
+        Log.i(TAG, "drawPBRShaderBall, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
+        setUpPBRShader(projection, view, model)
+
+        objRenderer.render()
 
         cleanup()
     }

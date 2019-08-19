@@ -57,4 +57,5 @@ dependencies {
     implementation 'com.github.kotlin-graphics:glm:v1.0.1'
 //    implementation 'com.github.kotlin-graphics:gli:v0.8.3.0-build-12'
 //    implementation 'org.lwjgl:lwjgl-xxhash:3.2.1'\
+    implementation files('libs/obj-0.3.0.jar')
 }
