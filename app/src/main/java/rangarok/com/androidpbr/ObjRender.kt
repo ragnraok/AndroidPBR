@@ -24,6 +24,7 @@ class ObjRender(input: InputStream) : PrimitiveRenderer {
     private var normals: FloatBuffer? = null
 
     init {
+        //TODO: fix uv error
         obj = ObjUtils.convertToRenderable(ObjReader.read(input))
         if (obj != null) {
             vao = genVAO()

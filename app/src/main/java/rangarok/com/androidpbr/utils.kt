@@ -1,6 +1,9 @@
 package rangarok.com.androidpbr
 
+import android.content.Context
+import android.graphics.BitmapFactory
 import android.opengl.GLES30
+import android.opengl.GLUtils
 
 fun clearGL() {
     GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
@@ -57,4 +60,21 @@ fun setCubemapTexParam(withMipmap: Boolean = false) {
         GLES30.GL_CLAMP_TO_EDGE
     )
 
+}
+
+fun uploadTexture(context: Context, path: String): Int {
+    val texIdArray = intArrayOf(0)
+    GLES30.glGenTextures(1, texIdArray, 0)
+    val texId = texIdArray[0]
+    GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texId)
+    setup2DTexParam()
+    val bitmap = BitmapFactory.decodeStream(context.assets.open(path))
+    GLUtils.texImage2D(GLES30.GL_TEXTURE_2D, 0, bitmap,0)
+    GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, 0)
+    return texId
+}
+
+fun activeTexture(texId: Int, slot: Int) {
+    GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + slot)
+    GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texId)
 }
