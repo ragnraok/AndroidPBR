@@ -27,7 +27,7 @@ class SceneRenderer(private val context: Context) {
     private var radianceTexture = RadianceTexture(context)
 //    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
-    private var objRenderer = ObjRender(context.assets.open("shader_ball/shader_ball.obj"))
+    private var objRenderer = ObjRender(context.assets.open("monkey/monkey.obj"))
 
 
     //TODO: fix light spot shape problem
@@ -42,7 +42,7 @@ class SceneRenderer(private val context: Context) {
         val projection = glm.perspective(glm.radians(camera.zoom), sceneWidth/sceneHeight.toFloat(), 0.1f, 200.0f)
         val view = camera.lookAt(Vec3(0))
 
-        renderShaderBalls(projection, view)
+        renderModelsScene(projection, view)
 //        renderSphereScene(projection, view)
 
         skybox.render(projection, Mat4(Mat3(view)))
@@ -69,27 +69,27 @@ class SceneRenderer(private val context: Context) {
         drawPBRSphere(projection, view, model)
     }
 
-    private fun renderShaderBalls(projection: Mat4, view: Mat4) {
+    private fun renderModelsScene(projection: Mat4, view: Mat4) {
         //TODO: fix uv error
-        val albedoMapTexId = uploadTexture(context, "Blue_tiles_01/Blue_tiles_01_Color.png")
-        val normalMapTexId = uploadTexture(context, "Blue_tiles_01/Blue_tiles_01_Normal.png")
-//        val metallicMapTexId =  uploadTexture(context,  "Blue_tiles_01/metallic.png")
-        val roughnessMapTexId = uploadTexture(context,  "Blue_tiles_01/Blue_tiles_01_Roughness.png")
-        val aoMapTexId = uploadTexture(context, "Blue_tiles_01/Blue_tiles_01_AO.png")
+        val albedoMapTexId = uploadTexture(context, "monkey/albedo.png")
+        val normalMapTexId = uploadTexture(context, "monkey/normal.png")
+        val metallicMapTexId =  uploadTexture(context,  "monkey/metallic.png")
+        val roughnessMapTexId = uploadTexture(context,  "monkey/roughness.png")
+        val aoMapTexId = uploadTexture(context, "monkey/ao.png")
 
         var model = Mat4(1.0)
-        model.translate(Vec3(0.0, 0.0, 0.0), model)
-        drawPBRShaderBall(projection, view, model, albedoMapTexId, normalMapTexId, 0, roughnessMapTexId, aoMapTexId)
+        model.translate(Vec3(0.0, -0.0, 0.0), model)
+        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
         model = Mat4(1.0)
-        model.translate(Vec3(1.5, 0.0, -3.0), model)
-        model.rotate(-100.0f, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRShaderBall(projection, view, model, albedoMapTexId, normalMapTexId, 0, roughnessMapTexId, aoMapTexId)
+        model.translate(Vec3(1.5, -0.0, -3.0), model)
+        model.rotate(-180.0f, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
         model = Mat4(1.0)
-        model.translate(Vec3(-1.5, 0.0, -3.0), model)
-        model.rotate(100.0f, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRShaderBall(projection, view, model, albedoMapTexId, normalMapTexId, 0, roughnessMapTexId, aoMapTexId)
+        model.translate(Vec3(-1.5, -0.0, -3.0), model)
+        model.rotate(180.0f, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
     }
 
@@ -107,7 +107,7 @@ class SceneRenderer(private val context: Context) {
 
     private fun setUpPBRShader(projection: Mat4, view: Mat4, model: Mat4) {
         pbrShader.enable()
-        pbrShader.setVec3("albedo", Vec3(1.0, 0.0, 0.0))
+        pbrShader.setVec3("albedo", Vec3(1.0, 1.0, 1.0))
         pbrShader.setFloat("ao", 1.0f)
         pbrShader.setMat4("projection", projection)
         pbrShader.setMat4("view", view)
@@ -180,14 +180,14 @@ class SceneRenderer(private val context: Context) {
         cleanup()
     }
 
-    private fun drawPBRShaderBall(projection: Mat4, view: Mat4, model: Mat4,
-                                  albedoMapTexId: Int, normalMapTexId: Int,
-                                  metallicMapTexId: Int, roughnessMapTexId: Int,
-                                  aoMapTexId: Int) {
-        Log.i(TAG, "drawPBRShaderBall, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
+    private fun drawPBRModel(projection: Mat4, view: Mat4, model: Mat4,
+                             albedoMapTexId: Int, normalMapTexId: Int,
+                             metallicMapTexId: Int, roughnessMapTexId: Int,
+                             aoMapTexId: Int) {
+        Log.i(TAG, "drawPBRModel, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         setUpPBRShaderWithTextures(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
-        sphereRenderer.render()
+        objRenderer.render()
 
         cleanup()
     }

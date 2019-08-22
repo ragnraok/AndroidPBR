@@ -33,7 +33,7 @@ class ObjRender(input: InputStream) : PrimitiveRenderer {
 
             indices = ObjData.getFaceVertexIndicesArray(obj)
             vertices = ObjData.getVertices(obj)
-            texCoords = ObjData.getTexCoords(obj, 2)
+            texCoords = ObjData.getTexCoords(obj, 2, true)
             normals = ObjData.getNormals(obj)
 
             indices?.apply {

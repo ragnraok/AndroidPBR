@@ -615,10 +615,11 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         
         const float MAX_RADIANCE_LOD = 6.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
-//        vec3 envBrdf = EnvBrdfCalcFunc(F0, metallic, max(dot(N, V), 0.0));
-//        vec3 specular = radiance * (F * envBrdf);
-        vec2 envBrdf = EnvBRDFLUTApprox(roughness, max(dot(N, V), 0.0));
-        vec3 specular = radiance * (F * envBrdf.x + envBrdf.y);
+        vec3 envBrdf = EnvBrdfCalcFunc(F0, metallic, max(dot(N, V), 0.0));
+        vec3 specular = radiance * (F * envBrdf);
+
+//        vec2 envBrdf = EnvBRDFLUTApprox(roughness, max(dot(N, V), 0.0));
+//        vec3 specular = radiance * (F * envBrdf.x + envBrdf.y);
         
         vec3 ambient = (kD * diffuse + specular) * ao;
         
@@ -885,7 +886,6 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures = """
     // IBL
     uniform samplerCube irradianceMap;
     uniform samplerCube radianceMap;
-    uniform sampler2D envBrdfMap;
     
     // lights
     uniform vec3 lightPositions[LIGHT_NUMBER];
@@ -968,7 +968,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures = """
         return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
     } 
       
-    vec3 EnvBrdfCalcFunc( vec3 specularColor, float gloss, float ndotv ) {
+    vec3 EnvDFGLazarov( vec3 specularColor, float gloss, float ndotv ) {
         vec4 p0 = vec4( 0.5745, 1.548, -0.02397, 1.301 );
         vec4 p1 = vec4( 0.5753, -0.2511, -0.02066, 0.4755 );
         vec4 t = gloss * p0 + p1;
@@ -998,9 +998,6 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures = """
         float metallic = texture(metallicMap, TexCoords).r;
         float roughness = texture(roughnessMap, TexCoords).r;
         float ao = texture(aoMap, TexCoords).r;
-        
-        const float specularFactor = 0.5;
-        vec3 specularColor	= mix( vec3( 0.08 * specularFactor ), albedo, metallic );
         
         vec3 N = getNormalFromMap();
         vec3 V = normalize(camPos - WorldPos);
@@ -1060,13 +1057,10 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures = """
         
         const float MAX_RADIANCE_LOD = 6.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
-//        vec3 envBrdf = EnvBrdfCalcFunc(F0, roughness, max(dot(N, V), 0.0));
-//        vec3 specular = radiance * (F * envBrdf);
+        vec3 envBrdf = EnvDFGLazarov(F0, roughness, max(dot(N, V), 0.0));
+        vec3 specular = radiance * (F * envBrdf);
 
-        vec2 envBrdf = EnvBRDFLUTApprox(specularColor, roughness, max(dot(N, V), 0.0));
-        vec3 specular = radiance * (F * envBrdf.x + envBrdf.y);
-
-//        vec2 envBrdf = texture(envBrdfMap, vec2(max(dot(N, V), 0.0), roughness)).rg;
+//        vec2 envBrdf = EnvBRDFLUTApprox(F0, roughness, max(dot(N, V), 0.0));
 //        vec3 specular = radiance * (F * envBrdf.x + envBrdf.y);
         
         vec3 ambient = (kD * diffuse + specular) * ao;
