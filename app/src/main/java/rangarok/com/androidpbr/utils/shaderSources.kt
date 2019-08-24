@@ -532,7 +532,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         return F0 + (max(vec3(1.0 - roughness), F0) - F0) * pow(1.0 - cosTheta, 5.0);
     } 
       
-    vec3 EnvBrdfCalcFunc( vec3 specularColor, float gloss, float ndotv ) {
+    vec3 EnvDFGLazarov( vec3 specularColor, float gloss, float ndotv ) {
         vec4 p0 = vec4( 0.5745, 1.548, -0.02397, 1.301 );
         vec4 p1 = vec4( 0.5753, -0.2511, -0.02066, 0.4755 );
         vec4 t = gloss * p0 + p1;
@@ -615,7 +615,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         
         const float MAX_RADIANCE_LOD = 6.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
-        vec3 envBrdf = EnvBrdfCalcFunc(F0, metallic, max(dot(N, V), 0.0));
+        vec3 envBrdf = EnvDFGLazarov(F0, metallic, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
 
 //        vec2 envBrdf = EnvBRDFLUTApprox(roughness, max(dot(N, V), 0.0));
