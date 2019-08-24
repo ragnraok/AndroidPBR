@@ -1,10 +1,13 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.brdf
 
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.opengl.GLES30
 import android.opengl.GLUtils
 import android.util.Log
+import rangarok.com.androidpbr.utils.RadianceMipmapLevel
+import rangarok.com.androidpbr.utils.Shader
+import rangarok.com.androidpbr.utils.setCubemapTexParam
 
 class RadianceTexture(context: Context) {
     private var texId = 0

@@ -1,10 +1,11 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.ui
 
 import android.content.Context
 import android.opengl.GLSurfaceView
 import android.util.AttributeSet
 import android.util.Log
 import android.view.SurfaceHolder
+import rangarok.com.androidpbr.renderer.SurfaceRenderer
 
 class RenderGLSurfaceView : GLSurfaceView {
 
@@ -38,7 +39,14 @@ class RenderGLSurfaceView : GLSurfaceView {
         })
     }
 
-    fun setRougness(roughness: Float) {
+    fun setRenderScene(scene: Int) {
+        queueEvent {
+            renderer.setRenderScene(scene)
+            requestRender()
+        }
+    }
+
+    fun setRoughness(roughness: Float) {
         queueEvent {
             renderer.setRougness(roughness)
             requestRender()
@@ -49,6 +57,17 @@ class RenderGLSurfaceView : GLSurfaceView {
         queueEvent {
             renderer.setMetallic(metallic)
             requestRender()
+        }
+    }
+
+    fun setSpin(spin: Boolean) {
+        renderer.setSpin(spin)
+        if (spin) {
+            renderer.afterRender =  {
+                requestRender()
+            }
+        } else {
+            renderer.afterRender = null
         }
     }
 

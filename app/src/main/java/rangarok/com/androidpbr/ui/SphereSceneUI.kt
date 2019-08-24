@@ -1,25 +1,20 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.ui
 
-import android.Manifest
 import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
+import rangarok.com.androidpbr.R
+import rangarok.com.androidpbr.utils.SCENE_SPHERE
 import kotlin.math.max
 
-class MainActivity : AppCompatActivity() {
-
+class SphereSceneUI : AppCompatActivity() {
     var drawView: RenderGLSurfaceView? = null
     var roughnessSeekbar: SeekBar? = null
     var metallicSeekbar: SeekBar? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        requestPermissions(
-            arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE),
-            1024
-        )
+        setContentView(R.layout.sphere_scene_ui)
 
         drawView = findViewById(R.id.draw_view)
         roughnessSeekbar = findViewById(R.id.roughness_seekbar)
@@ -30,7 +25,7 @@ class MainActivity : AppCompatActivity() {
 
         roughnessSeekbar?.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
             override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
-                drawView?.setRougness(max(progress / 100.0f, 0.1f))
+                drawView?.setRoughness(max(progress / 100.0f, 0.1f))
             }
 
             override fun onStartTrackingTouch(seekBar: SeekBar?) {
@@ -53,9 +48,10 @@ class MainActivity : AppCompatActivity() {
             }
 
         })
+        drawView?.setRenderScene(SCENE_SPHERE)
     }
 
     companion object {
-        const val TAG = "AndroidPBR"
+        const val TAG = "SphereSceneUI"
     }
 }

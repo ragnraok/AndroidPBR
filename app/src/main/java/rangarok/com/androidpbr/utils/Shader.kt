@@ -1,4 +1,4 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.utils
 
 import android.opengl.GLES30
 import android.util.Log

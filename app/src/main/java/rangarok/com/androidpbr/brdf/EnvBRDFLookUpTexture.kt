@@ -1,13 +1,24 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.brdf
 
 import android.opengl.GLES30
 import android.util.Log
+import rangarok.com.androidpbr.utils.EnvBrdfFs
+import rangarok.com.androidpbr.utils.EnvBrdfTextureSize
+import rangarok.com.androidpbr.utils.EnvBrdfVs
+import rangarok.com.androidpbr.renderer.QuadRenderer
+import rangarok.com.androidpbr.utils.Shader
+import rangarok.com.androidpbr.utils.clearGL
+import rangarok.com.androidpbr.utils.setup2DTexParam
+import rangarok.com.androidpbr.utils.viewport
 
 class EnvBRDFLookUpTexture(renderToScreen: Boolean = false) {
 
     private var texId = 0
 
-    private val envBrdfShader = Shader(EnvBrdfVs, EnvBrdfFs)
+    private val envBrdfShader = Shader(
+        EnvBrdfVs,
+        EnvBrdfFs
+    )
     private val quadRenderer = QuadRenderer()
 
     init {
@@ -27,7 +38,9 @@ class EnvBRDFLookUpTexture(renderToScreen: Boolean = false) {
         val rbo = rboArray[0]
 
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texId)
-        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RG32F, EnvBrdfTextureSize, EnvBrdfTextureSize, 0, GLES30.GL_RG, GLES30.GL_FLOAT, null)
+        GLES30.glTexImage2D(GLES30.GL_TEXTURE_2D, 0, GLES30.GL_RG32F,
+            EnvBrdfTextureSize,
+            EnvBrdfTextureSize, 0, GLES30.GL_RG, GLES30.GL_FLOAT, null)
 
         setup2DTexParam()
 
@@ -49,7 +62,10 @@ class EnvBRDFLookUpTexture(renderToScreen: Boolean = false) {
                 0
             )
 
-            viewport(EnvBrdfTextureSize, EnvBrdfTextureSize)
+            viewport(
+                EnvBrdfTextureSize,
+                EnvBrdfTextureSize
+            )
         }
         clearGL()
         quadRenderer.render()

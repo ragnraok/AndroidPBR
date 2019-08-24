@@ -1,4 +1,4 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.utils
 
 import glm_.vec2.Vec2
 import glm_.vec3.Vec3
@@ -237,3 +237,6 @@ const val normalMapSlot = 4
 const val metallicMapSlot = 5
 const val roughnessMapSlot = 6
 const val aoMapSlot = 7
+
+const val SCENE_SPHERE = 1
+const val SCENE_MONKEY_MODEL = 2

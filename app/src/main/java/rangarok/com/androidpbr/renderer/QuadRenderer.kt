@@ -1,7 +1,10 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.opengl.GLES30
 import android.util.Log
+import rangarok.com.androidpbr.utils.QuadVertices
+import rangarok.com.androidpbr.utils.genBuffer
+import rangarok.com.androidpbr.utils.genVAO
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 

@@ -1,13 +1,13 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.opengl.GLES30
 import android.util.Log
 import glm_.vec2.Vec2
 import glm_.vec3.Vec3
+import rangarok.com.androidpbr.utils.genBuffer
+import rangarok.com.androidpbr.utils.genVAO
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.FloatBuffer
-import java.nio.IntBuffer
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin

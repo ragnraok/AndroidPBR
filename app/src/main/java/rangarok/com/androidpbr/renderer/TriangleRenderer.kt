@@ -1,10 +1,12 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.opengl.GLES30
 import android.util.Log
+import rangarok.com.androidpbr.utils.TriangleVertices
+import rangarok.com.androidpbr.utils.genBuffer
+import rangarok.com.androidpbr.utils.genVAO
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
-import java.nio.FloatBuffer
 
 class TriangleRenderer : PrimitiveRenderer {
 
@@ -19,7 +21,9 @@ class TriangleRenderer : PrimitiveRenderer {
 
             GLES30.glBindVertexArray(vao)
             GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, vbo)
-            val buffer = ByteBuffer.allocateDirect(TriangleVertices.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(TriangleVertices)
+            val buffer = ByteBuffer.allocateDirect(TriangleVertices.size * 4).order(ByteOrder.nativeOrder()).asFloatBuffer().put(
+                TriangleVertices
+            )
             buffer.position(0)
             GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, TriangleVertices.size * 4, buffer, GLES30.GL_STATIC_DRAW)
 

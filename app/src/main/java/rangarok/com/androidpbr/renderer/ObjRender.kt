@@ -1,4 +1,4 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.opengl.GLES30
 import android.util.Log
@@ -7,11 +7,12 @@ import de.javagl.obj.ObjData
 import de.javagl.obj.ObjReader
 import de.javagl.obj.ObjUtils
 import glm_.size
+import rangarok.com.androidpbr.utils.genBuffer
+import rangarok.com.androidpbr.utils.genVAO
 import java.io.InputStream
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
-import java.nio.IntBuffer
 
 class ObjRender(input: InputStream) : PrimitiveRenderer {
 

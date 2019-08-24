@@ -1,7 +1,10 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.opengl.GLES30
 import android.util.Log
+import rangarok.com.androidpbr.utils.CubeVertices
+import rangarok.com.androidpbr.utils.genBuffer
+import rangarok.com.androidpbr.utils.genVAO
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -22,7 +25,8 @@ class CubeRenderer : PrimitiveRenderer {
             val buffer =
                 ByteBuffer.allocateDirect(CubeVertices.size * 4).order(ByteOrder.nativeOrder())
                     .asFloatBuffer().put(
-                        CubeVertices)
+                        CubeVertices
+                    )
             buffer.position(0)
             GLES30.glBufferData(
                 GLES30.GL_ARRAY_BUFFER,

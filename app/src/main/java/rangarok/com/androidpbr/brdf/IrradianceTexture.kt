@@ -1,12 +1,12 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.brdf
 
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.opengl.GLES30
 import android.opengl.GLUtils
 import android.util.Log
-import java.nio.ByteBuffer
-import java.nio.ByteOrder
+import rangarok.com.androidpbr.utils.Shader
+import rangarok.com.androidpbr.utils.setCubemapTexParam
 
 class IrradianceTexture(context: Context) {
 

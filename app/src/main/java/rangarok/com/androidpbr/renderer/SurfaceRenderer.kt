@@ -1,9 +1,11 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.util.Log
+import rangarok.com.androidpbr.utils.SCENE_SPHERE
+import rangarok.com.androidpbr.ui.SceneRenderer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
@@ -14,8 +16,16 @@ class SurfaceRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     private lateinit var sceneRenderer: SceneRenderer
 
+    private var renderScene = SCENE_SPHERE
+    private var surfaceCreated = false
+    private var spin = false
+
+    var afterRender: (()->Unit)? = null
+
     override fun onDrawFrame(gl: GL10?) {
-        sceneRenderer.drawFrame(this.surfaceWidth, this.surfaceHeight)
+        sceneRenderer.drawFrame(this.surfaceWidth, this.surfaceHeight) {
+            afterRender?.invoke()
+        }
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {
@@ -29,6 +39,9 @@ class SurfaceRenderer(private val context: Context) : GLSurfaceView.Renderer {
     override fun onSurfaceCreated(gl: GL10?, config: EGLConfig?) {
         Log.i(TAG, "onSurfaceCreated")
         sceneRenderer = SceneRenderer(context)
+        sceneRenderer.setRenderScene(renderScene)
+        sceneRenderer.setSpin(spin)
+        surfaceCreated = true
     }
 
     fun setMetallic(metallic: Float) {
@@ -37,6 +50,22 @@ class SurfaceRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     fun setRougness(roughness: Float) {
         sceneRenderer.setRoughness(roughness)
+    }
+
+
+    fun setRenderScene(scene: Int) {
+        renderScene = scene
+        if (surfaceCreated) {
+            sceneRenderer.setRenderScene(scene)
+        }
+
+    }
+
+    fun setSpin(spin: Boolean) {
+        if (surfaceCreated) {
+            sceneRenderer.setSpin(spin)
+        }
+        this.spin = spin
     }
 
     companion object {

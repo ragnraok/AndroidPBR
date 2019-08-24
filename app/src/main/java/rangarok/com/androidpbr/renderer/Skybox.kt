@@ -1,4 +1,4 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.renderer
 
 import android.content.Context
 import android.graphics.BitmapFactory
@@ -6,6 +6,10 @@ import android.opengl.GLES30
 import android.opengl.GLUtils
 import android.util.Log
 import glm_.mat4x4.Mat4
+import rangarok.com.androidpbr.utils.Shader
+import rangarok.com.androidpbr.utils.SkyBoxVertices
+import rangarok.com.androidpbr.utils.skyBoxFs
+import rangarok.com.androidpbr.utils.skyBoxVs
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 
@@ -15,7 +19,10 @@ class Skybox {
 
     var cubeMapTexture = 0
 
-    var skyBoxShader = Shader(skyBoxVs, skyBoxFs)
+    var skyBoxShader = Shader(
+        skyBoxVs,
+        skyBoxFs
+    )
 
     fun init(context: Context) {
         val texArray = intArrayOf(0)

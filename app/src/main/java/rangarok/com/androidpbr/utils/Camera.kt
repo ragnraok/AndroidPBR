@@ -1,4 +1,4 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.utils
 
 import glm_.glm
 import glm_.mat4x4.Mat4

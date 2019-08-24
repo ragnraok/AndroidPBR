@@ -1,9 +1,10 @@
-package rangarok.com.androidpbr
+package rangarok.com.androidpbr.utils
 
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.opengl.GLES30
 import android.opengl.GLUtils
+import android.os.SystemClock
 
 fun clearGL() {
     GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
@@ -77,4 +78,12 @@ fun uploadTexture(context: Context, path: String): Int {
 fun activeTexture(texId: Int, slot: Int) {
     GLES30.glActiveTexture(GLES30.GL_TEXTURE0 + slot)
     GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, texId)
+}
+
+fun currentTick(): Long {
+    return SystemClock.elapsedRealtime()
+}
+
+fun tickToNowMs(tick: Long): Long {
+    return SystemClock.elapsedRealtime() - tick
 }
