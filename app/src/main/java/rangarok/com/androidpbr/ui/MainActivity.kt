@@ -18,6 +18,10 @@ class MainActivity : AppCompatActivity() {
             1024
         )
 
+        findViewById<Button>(R.id.sphere_scene_direct_light_button).setOnClickListener {
+            startActivity(Intent(this@MainActivity, SphereSceneDirectLightUI::class.java))
+        }
+
         findViewById<Button>(R.id.sphere_scene_button).setOnClickListener {
             startActivity(Intent(this@MainActivity, SphereSceneUI::class.java))
         }

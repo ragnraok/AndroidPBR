@@ -25,6 +25,8 @@
 
         <activity android:name=".ui.ModelSceneUI"
             android:screenOrientation="portrait"/>
+        <activity android:name=".ui.SphereSceneDirectLightUI"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

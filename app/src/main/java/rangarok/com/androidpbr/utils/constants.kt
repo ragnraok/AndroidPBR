@@ -244,3 +244,4 @@ const val aoMapSlot = 7
 
 const val SCENE_SPHERE = 1
 const val SCENE_MONKEY_MODEL = 2
+const val SCENE_DIRECT_LIGHT = 3

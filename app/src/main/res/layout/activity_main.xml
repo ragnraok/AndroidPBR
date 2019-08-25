@@ -9,7 +9,14 @@
     tools:context=".ui.MainActivity">
 
     <Button
+        android:id="@+id/sphere_scene_direct_light_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sphere Scene Direct Light"/>
+
+    <Button
         android:id="@+id/sphere_scene_button"
+        android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Sphere Scene"/>
