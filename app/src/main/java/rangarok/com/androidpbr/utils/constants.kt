@@ -171,15 +171,19 @@ fun GenerateSphereVertices(): FloatArray {
 
 }
 
-val LightPositions = arrayOf(
+val DirectionalLightDir = Vec3(0.0f, 0.0, -1.0f)
+val SphereSceneDirectionalLightColor = Vec3(5.0f, 0.0f, 0.0f)
+val ModelSceneDirectionalLightColor = Vec3(5.0, 5.0, 5.0)
+
+val PointLightPositions = arrayOf(
     Vec3(-10.0f, 10.0f, 10.0f),
     Vec3(10.0f, -10.0f, 10.0f),
     Vec3(-5.0f, -5.0f, 5.0f)
 )
 
-val LightColors = arrayOf(
+val PointLightColors = arrayOf(
     Vec3(300.0f, 300.0f, 300.0f),
-    Vec3(100.0f, 100.0f, 100.0f),
+    Vec3(300.0f, 200.0f, 100.0f),
     Vec3(500.0f, 400.0f, 300.0f)
 )
 

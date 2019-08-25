@@ -124,12 +124,12 @@ class SceneRenderer(private val context: Context) {
 
         var model = Mat4(1.0)
         model.translate(Vec3(0.0, -0.0, 0.0), model)
-        model.rotate(rotateDegree, Vec3(0.0, 1.0, 0.0), model)
+        model.rotate(rotateDegree, Vec3(1.0, 1.0, 0.0), model)
         drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
         model = Mat4(1.0)
         model.translate(Vec3(1.5, -0.0, -3.0), model)
-        model.rotate(-100.0f + rotateDegree, Vec3(0.0, 1.0, 0.0), model)
+        model.rotate(-100.0f - rotateDegree, Vec3(0.0, 1.0, 0.0), model)
         drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
         model = Mat4(1.0)
@@ -183,10 +183,12 @@ class SceneRenderer(private val context: Context) {
             it.setVec3("ambient", Vec3(0.1, 0.1, 0.1))
             it.setMat4("model", model)
 
-            for (i in 0 until LightPositions.size) {
-                it.setVec3("lightPositions[$i]", LightPositions[i])
-                it.setVec3("lightColors[$i]", LightColors[i])
+            for (i in 0 until PointLightPositions.size) {
+                it.setVec3("pointLightPositions[$i]", PointLightPositions[i])
+                it.setVec3("pointLightColors[$i]", PointLightColors[i])
             }
+            it.setVec3("directionLightDir", DirectionalLightDir)
+            it.setVec3("directionLightColor", SphereSceneDirectionalLightColor)
             irradianceTexture.active(it)
             radianceTexture.active(it)
 
@@ -242,10 +244,12 @@ class SceneRenderer(private val context: Context) {
             it.setVec3("ambient", Vec3(0.1, 0.1, 0.1))
             it.setMat4("model", model)
 
-            for (i in 0 until LightPositions.size) {
-                it.setVec3("lightPositions[$i]", LightPositions[i])
-                it.setVec3("lightColors[$i]", LightColors[i])
+            for (i in 0 until PointLightPositions.size) {
+                it.setVec3("pointLightPositions[$i]", PointLightPositions[i])
+                it.setVec3("pointLightColors[$i]", PointLightColors[i])
             }
+            it.setVec3("directionLightDir", DirectionalLightDir)
+            it.setVec3("directionLightColor", ModelSceneDirectionalLightColor)
             irradianceTexture.active(it)
             radianceTexture.active(it)
 //        envBRDFLookUpTexture.active(it)
