@@ -22,6 +22,12 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, SphereSceneDirectLightUI::class.java))
         }
 
+        findViewById<Button>(R.id.sphere_scene_irradiance_ibl).setOnClickListener {
+            val intent = Intent(this@MainActivity, SphereSceneUI::class.java)
+            intent.putExtra(SphereSceneUI.IRRADIANCE, true)
+            startActivity(intent)
+        }
+
         findViewById<Button>(R.id.sphere_scene_button).setOnClickListener {
             startActivity(Intent(this@MainActivity, SphereSceneUI::class.java))
         }

@@ -81,7 +81,7 @@ class SceneRenderer(private val context: Context) {
         if (pbrShader != null) {
             if (renderScene == SCENE_MONKEY_MODEL) {
                 renderModelsScene(projection, view)
-            } else if (renderScene == SCENE_SPHERE || renderScene == SCENE_DIRECT_LIGHT) {
+            } else if (renderScene == SCENE_SPHERE || renderScene == SCENE_DIRECT_LIGHT || renderScene == SCENE_IRRADIANCE_IBL) {
                 renderSphereScene(projection, view)
             }
 
@@ -171,6 +171,11 @@ class SceneRenderer(private val context: Context) {
             pbrShader = Shader(
                 PbrVs,
                 PbrDirectLightFs
+            )
+        } else if (renderScene == SCENE_IRRADIANCE_IBL) {
+            pbrShader = Shader(
+                PbrVs,
+                PbrWithIrradianceIBLFs
             )
         }
     }

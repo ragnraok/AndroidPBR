@@ -15,11 +15,18 @@
         android:text="Sphere Scene Direct Light"/>
 
     <Button
+        android:id="@+id/sphere_scene_irradiance_ibl"
+        android:layout_marginTop="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sphere Scene Irradiance IBL"/>
+
+    <Button
         android:id="@+id/sphere_scene_button"
         android:layout_marginTop="10dp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Sphere Scene"/>
+        android:text="Sphere Scene Radiance IBL"/>
 
     <Button
         android:id="@+id/monkey_scene_button"

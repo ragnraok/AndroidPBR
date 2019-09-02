@@ -127,8 +127,7 @@ val LightingCalculation = """
     // reflectance equation
     vec3 Lo = vec3(0.0);
     // point light
-    for(int i = 0; i < POINT_LIGHT_NUMBER; ++i)
-    {
+    for(int i = 0; i < POINT_LIGHT_NUMBER; ++i) {
         // calculate per-light radiance
         vec3 L = normalize(pointLightPositions[i] - WorldPos);
         vec3 H = normalize(V + L);

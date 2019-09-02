@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import rangarok.com.androidpbr.R
+import rangarok.com.androidpbr.utils.SCENE_IRRADIANCE_IBL
 import rangarok.com.androidpbr.utils.SCENE_SPHERE
 import kotlin.math.max
 
@@ -48,10 +49,16 @@ class SphereSceneUI : AppCompatActivity() {
             }
 
         })
-        drawView?.setRenderScene(SCENE_SPHERE)
+        if (intent.getBooleanExtra(IRRADIANCE, false)) {
+            drawView?.setRenderScene(SCENE_IRRADIANCE_IBL)
+        } else {
+            drawView?.setRenderScene(SCENE_SPHERE)
+        }
     }
 
     companion object {
         const val TAG = "SphereSceneUI"
+
+        const val IRRADIANCE = "key_irradiance"
     }
 }
