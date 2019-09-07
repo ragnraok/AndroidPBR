@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import rangarok.com.androidpbr.R
 import rangarok.com.androidpbr.utils.SCENE_IRRADIANCE_IBL
 import rangarok.com.androidpbr.utils.SCENE_SPHERE
+import rangarok.com.androidpbr.utils.SCENE_TEXTURE_SPHERE
 import kotlin.math.max
 
 class SphereSceneUI : AppCompatActivity() {

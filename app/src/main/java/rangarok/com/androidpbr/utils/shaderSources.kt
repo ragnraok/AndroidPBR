@@ -88,6 +88,8 @@ val BRDF = """
     } 
       
     vec3 EnvDFGLazarov( vec3 specularColor, float gloss, float ndotv ) {
+        //# [ Lazarov 2013, "Getting More Physical in Call of Duty: Black Ops II" ]
+        //# Adaptation to fit our G term.
         vec4 p0 = vec4( 0.5745, 1.548, -0.02397, 1.301 );
         vec4 p1 = vec4( 0.5753, -0.2511, -0.02066, 0.4755 );
         vec4 t = gloss * p0 + p1;
@@ -97,18 +99,7 @@ val BRDF = """
         bias *= clamp( 50.0 * specularColor.y, 0.0, 1.0);
         return specularColor * scale + bias;
     }  
-    
-    vec2 EnvBRDFLUTApprox(vec3 SpecularColor, float roughness, float NdotV) {
-        //# [ Lazarov 2013, "Getting More Physical in Call of Duty: Black Ops II" ]
-        //# Adaptation to fit our G term.
-        const vec4 c0 = vec4( -1.0, -0.0275, -0.572, 0.022 );
-        const vec4 c1 = vec4( 1.0, 0.0425, 1.04, -0.04 );
-        vec4 r = roughness * c0 + c1;
-        float a004 = min( r.x * r.x, exp2( -9.28 * NdotV ) ) * r.x + r.y;
-        vec2 AB = vec2( -1.04, 1.04 ) * a004 + r.zw;
-        AB.y *= clamp( 50.0 * SpecularColor.y , 0.0, 1.0);
-        return vec2(SpecularColor * AB.x + AB.y);
-    }
+
 """
 
 @Language("glsl")
@@ -478,9 +469,6 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
         vec3 envBrdf = EnvDFGLazarov(F0, metallic, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
-
-//        vec2 envBrdf = EnvBRDFLUTApprox(roughness, max(dot(N, V), 0.0));
-//        vec3 specular = radiance * (F * envBrdf.x + envBrdf.y);
         
         vec3 ambient = (kD * diffuse + specular) * ao;
         

@@ -32,6 +32,11 @@ class MainActivity : AppCompatActivity() {
             startActivity(Intent(this@MainActivity, SphereSceneUI::class.java))
         }
 
+        findViewById<Button>(R.id.textured_sphere_scene_button).setOnClickListener {
+            val intent = Intent(this@MainActivity, TexturedSphereSceneUI::class.java)
+            startActivity(intent)
+        }
+
         findViewById<Button>(R.id.monkey_scene_button).setOnClickListener {
             startActivity(Intent(this@MainActivity, ModelSceneUI::class.java))
         }

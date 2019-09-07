@@ -27,6 +27,9 @@
             android:screenOrientation="portrait"/>
         <activity android:name=".ui.SphereSceneDirectLightUI"
             android:screenOrientation="portrait"/>
+
+        <activity android:name=".ui.TexturedSphereSceneUI"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>

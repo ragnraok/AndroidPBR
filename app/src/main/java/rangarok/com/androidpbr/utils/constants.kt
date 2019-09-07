@@ -246,3 +246,4 @@ const val SCENE_SPHERE = 1
 const val SCENE_MONKEY_MODEL = 2
 const val SCENE_DIRECT_LIGHT = 3
 const val SCENE_IRRADIANCE_IBL = 4
+const val SCENE_TEXTURE_SPHERE = 5

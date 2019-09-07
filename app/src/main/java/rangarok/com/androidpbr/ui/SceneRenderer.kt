@@ -57,6 +57,35 @@ class SceneRenderer(private val context: Context) {
         uploadTexture(context, "monkey/roughness.png")
     private val aoMapTexId = uploadTexture(context, "monkey/ao.png")
 
+    private val sphere2AlbedoMapTexId =
+        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_basecolor.png")
+    private val sphere2NormalMapTexId =
+        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_normal.png")
+    private val sphere2MetallicMapTexId =
+        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_metallic.png")
+    private val sphere2RoughnessMapTexId = uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_roughness.png")
+    private val sphere2AoMapTexId = -1
+
+    private val sphere3AlbedoMapTexId =
+            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Base_Color.png")
+    private val sphere3NormalMapTexId =
+        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Normal.png")
+    private val sphere3MetallicMapTexId =
+        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Metallic.png")
+    private val sphere3RoughnessMapTexId =
+        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Roughness.png")
+    private val sphere3AoMapTexId = uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Ambient_Occlusion.png")
+
+    private val sphere1AlbedoMapTexId =
+        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-alb.png")
+    private val sphere1NormalMapTexId =
+        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-normal.png")
+    private val sphere1MetallicMapTexId =
+        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-metal.png")
+    private val sphere1RoughnessMapTexId =
+        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-rough.png")
+    private val sphere1AoMapTexId = uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-ao.png")
+
     private val handler = Handler(Looper.getMainLooper())
 
     fun drawFrame(sceneWidth: Int, sceneHeight: Int, afterRender: (()->Unit)? = null) {
@@ -83,6 +112,8 @@ class SceneRenderer(private val context: Context) {
                 renderModelsScene(projection, view)
             } else if (renderScene == SCENE_SPHERE || renderScene == SCENE_DIRECT_LIGHT || renderScene == SCENE_IRRADIANCE_IBL) {
                 renderSphereScene(projection, view)
+            } else if (renderScene == SCENE_TEXTURE_SPHERE) {
+                renderTextureSphereScene(projection, view)
             }
 
             skybox.render(projection, Mat4(Mat3(view)))
@@ -139,6 +170,28 @@ class SceneRenderer(private val context: Context) {
 
     }
 
+    private fun renderTextureSphereScene(projection: Mat4, view: Mat4) {
+        if (spin) {
+            rotateDegree += timeToLastRenderTick / SPIN_DURATION.toFloat() * 360.0f
+        }
+        var model = Mat4(1.0)
+        // center sphere
+        model.rotate(rotateDegree, Vec3(1.0, 1.0, 0.0), model)
+        drawPBRTextureShphere(projection, view, model, sphere1AlbedoMapTexId, sphere1NormalMapTexId, sphere1MetallicMapTexId, sphere1RoughnessMapTexId, sphere1AoMapTexId)
+
+        // right sphere
+        model = Mat4(1.0f)
+        model.translate(Vec3(1.5, 0.0, -3.0), model)
+        model.rotate(-100.0f - rotateDegree, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRTextureShphere(projection, view, model, sphere2AlbedoMapTexId, sphere2NormalMapTexId, sphere2MetallicMapTexId, sphere2RoughnessMapTexId, sphere2AoMapTexId)
+
+        // left sphere
+        model = Mat4(1.0f)
+        model.translate(Vec3(-1.5, 0.0, -3.0), model)
+        model.rotate(100.0f + rotateDegree, Vec3(0.0, 1.0, 0.0), model)
+        drawPBRTextureShphere(projection, view, model, sphere3AlbedoMapTexId, sphere3NormalMapTexId, sphere3MetallicMapTexId, sphere3RoughnessMapTexId, sphere3AoMapTexId)
+    }
+
     fun setSpin(spin: Boolean) {
         this.spin = spin
     }
@@ -162,7 +215,7 @@ class SceneRenderer(private val context: Context) {
                 PbrVs,
                 PbrWithSpecularRadianceIBLFAndEnvBrdCalcs
             )
-        } else if (renderScene == SCENE_MONKEY_MODEL) {
+        } else if (renderScene == SCENE_MONKEY_MODEL || renderScene == SCENE_TEXTURE_SPHERE) {
             pbrShader = Shader(
                 PbrVs,
                 PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures
@@ -270,6 +323,18 @@ class SceneRenderer(private val context: Context) {
     private fun drawPBRSphere(projection: Mat4, view: Mat4, model: Mat4) {
         Log.i(TAG, "drawPBRSphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
         setUpPBRShader(projection, view, model)
+
+        sphereRenderer.render()
+
+        cleanup()
+    }
+
+    private fun drawPBRTextureShphere(projection: Mat4, view: Mat4, model: Mat4,
+                                      albedoMapTexId: Int, normalMapTexId: Int,
+                                      metallicMapTexId: Int, roughnessMapTexId: Int,
+                                      aoMapTexId: Int) {
+        Log.i(TAG, "drawPBRTextureShphere, sceneWidth:$sceneWidth, sceneHeight:$sceneHeight")
+        setUpPBRShaderWithTextures(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
 
         sphereRenderer.render()
 
