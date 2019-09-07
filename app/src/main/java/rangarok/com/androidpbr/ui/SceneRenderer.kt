@@ -47,44 +47,17 @@ class SceneRenderer(private val context: Context) {
     private var setRenderTick = false
     private var timeToLastRenderTick = 0L
 
-    private val albedoMapTexId =
-        uploadTexture(context, "monkey/albedo.png")
-    private val normalMapTexId =
-        uploadTexture(context, "monkey/normal.png")
-    private val metallicMapTexId =
-        uploadTexture(context, "monkey/metallic.png")
-    private val roughnessMapTexId =
-        uploadTexture(context, "monkey/roughness.png")
-    private val aoMapTexId = uploadTexture(context, "monkey/ao.png")
+    private var monkeyAlbedoMapTexId = 0
+    private var monkeyNormalMapTexId = 0
+    private var monkeyMetallicMapTexId = 0
+    private var monkeyRoughnessMapTexId = 0
+    private var monkeyAoMapTexId = 0
 
-    private val sphere2AlbedoMapTexId =
-        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_basecolor.png")
-    private val sphere2NormalMapTexId =
-        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_normal.png")
-    private val sphere2MetallicMapTexId =
-        uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_metallic.png")
-    private val sphere2RoughnessMapTexId = uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_roughness.png")
-    private val sphere2AoMapTexId = -1
-
-    private val sphere3AlbedoMapTexId =
-            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Base_Color.png")
-    private val sphere3NormalMapTexId =
-        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Normal.png")
-    private val sphere3MetallicMapTexId =
-        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Metallic.png")
-    private val sphere3RoughnessMapTexId =
-        uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Roughness.png")
-    private val sphere3AoMapTexId = uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Ambient_Occlusion.png")
-
-    private val sphere1AlbedoMapTexId =
-        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-alb.png")
-    private val sphere1NormalMapTexId =
-        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-normal.png")
-    private val sphere1MetallicMapTexId =
-        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-metal.png")
-    private val sphere1RoughnessMapTexId =
-        uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-rough.png")
-    private val sphere1AoMapTexId = uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-ao.png")
+    private var sphereAlbedoTexIds = intArrayOf(0, 0, 0)
+    private var sphereNormalTexIds = intArrayOf(0, 0, 0)
+    private var sphereMetallicTexIds = intArrayOf(0, 0, 0)
+    private var sphereRoughnessTexIds = intArrayOf(0, 0, 0)
+    private var sphereAoTexIds = intArrayOf(0, 0, 0)
 
     private val handler = Handler(Looper.getMainLooper())
 
@@ -156,17 +129,17 @@ class SceneRenderer(private val context: Context) {
         var model = Mat4(1.0)
         model.translate(Vec3(0.0, -0.0, 0.0), model)
         model.rotate(rotateDegree, Vec3(1.0, 1.0, 0.0), model)
-        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
+        drawPBRModel(projection, view, model, monkeyAlbedoMapTexId, monkeyNormalMapTexId, monkeyMetallicMapTexId, monkeyRoughnessMapTexId, monkeyAoMapTexId)
 
         model = Mat4(1.0)
         model.translate(Vec3(1.5, -0.0, -3.0), model)
         model.rotate(-100.0f - rotateDegree, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
+        drawPBRModel(projection, view, model, monkeyAlbedoMapTexId, monkeyNormalMapTexId, monkeyMetallicMapTexId, monkeyRoughnessMapTexId, monkeyAoMapTexId)
 
         model = Mat4(1.0)
         model.translate(Vec3(-1.5, -0.0, -3.0), model)
         model.rotate(100.0f + rotateDegree, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRModel(projection, view, model, albedoMapTexId, normalMapTexId, metallicMapTexId, roughnessMapTexId, aoMapTexId)
+        drawPBRModel(projection, view, model, monkeyAlbedoMapTexId, monkeyNormalMapTexId, monkeyMetallicMapTexId, monkeyRoughnessMapTexId, monkeyAoMapTexId)
 
     }
 
@@ -177,19 +150,19 @@ class SceneRenderer(private val context: Context) {
         var model = Mat4(1.0)
         // center sphere
         model.rotate(rotateDegree, Vec3(1.0, 1.0, 0.0), model)
-        drawPBRTextureShphere(projection, view, model, sphere1AlbedoMapTexId, sphere1NormalMapTexId, sphere1MetallicMapTexId, sphere1RoughnessMapTexId, sphere1AoMapTexId)
+        drawPBRTextureShphere(projection, view, model, sphereAlbedoTexIds[0], sphereNormalTexIds[0], sphereMetallicTexIds[0], sphereRoughnessTexIds[0], sphereAoTexIds[0])
 
         // right sphere
         model = Mat4(1.0f)
         model.translate(Vec3(1.5, 0.0, -3.0), model)
         model.rotate(-100.0f - rotateDegree, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRTextureShphere(projection, view, model, sphere2AlbedoMapTexId, sphere2NormalMapTexId, sphere2MetallicMapTexId, sphere2RoughnessMapTexId, sphere2AoMapTexId)
+        drawPBRTextureShphere(projection, view, model, sphereAlbedoTexIds[1], sphereNormalTexIds[1], sphereMetallicTexIds[1], sphereRoughnessTexIds[1], sphereAoTexIds[1])
 
         // left sphere
         model = Mat4(1.0f)
         model.translate(Vec3(-1.5, 0.0, -3.0), model)
         model.rotate(100.0f + rotateDegree, Vec3(0.0, 1.0, 0.0), model)
-        drawPBRTextureShphere(projection, view, model, sphere3AlbedoMapTexId, sphere3NormalMapTexId, sphere3MetallicMapTexId, sphere3RoughnessMapTexId, sphere3AoMapTexId)
+        drawPBRTextureShphere(projection, view, model, sphereAlbedoTexIds[2], sphereNormalTexIds[2], sphereMetallicTexIds[2], sphereRoughnessTexIds[2], sphereAoTexIds[2])
     }
 
     fun setSpin(spin: Boolean) {
@@ -231,6 +204,56 @@ class SceneRenderer(private val context: Context) {
                 PbrWithIrradianceIBLFs
             )
         }
+
+        if (renderScene == SCENE_TEXTURE_SPHERE) {
+            initSphereTexture()
+        }
+        if (renderScene == SCENE_MONKEY_MODEL) {
+            initMonkeyTexture()
+        }
+    }
+
+    private fun initSphereTexture() {
+        sphereAlbedoTexIds[0] =
+            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_basecolor.png")
+        sphereNormalTexIds[0] =
+            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_normal.png")
+        sphereMetallicTexIds[0] =
+            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_metallic.png")
+        sphereRoughnessTexIds[0] = uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_roughness.png")
+        sphereAoTexIds[0] = -1
+
+        sphereAlbedoTexIds[1] =
+            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Base_Color.png")
+        sphereNormalTexIds[1] =
+            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Normal.png")
+        sphereMetallicTexIds[1] =
+            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Metallic.png")
+        sphereRoughnessTexIds[1] =
+            uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Roughness.png")
+        sphereAoTexIds[1] = uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Ambient_Occlusion.png")
+
+        sphereAlbedoTexIds[2] =
+            uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-alb.png")
+        sphereNormalTexIds[2] =
+            uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-normal.png")
+        sphereMetallicTexIds[2] =
+            uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-metal.png")
+        sphereRoughnessTexIds[2] =
+            uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-rough.png")
+        sphereAoTexIds[2] = uploadTexture(context, "scuffed-plastic-1-Unreal-Engine/scuffed-plastic-ao.png")
+    }
+
+    private fun initMonkeyTexture() {
+        monkeyAlbedoMapTexId =
+            uploadTexture(context, "monkey/albedo.png")
+        monkeyNormalMapTexId =
+            uploadTexture(context, "monkey/normal.png")
+        monkeyMetallicMapTexId =
+            uploadTexture(context, "monkey/metallic.png")
+        monkeyRoughnessMapTexId =
+            uploadTexture(context, "monkey/roughness.png")
+        monkeyAoMapTexId = uploadTexture(context, "monkey/ao.png")
     }
 
     private fun setUpPBRShader(projection: Mat4, view: Mat4, model: Mat4) {
