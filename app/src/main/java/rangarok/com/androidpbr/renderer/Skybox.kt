@@ -3,9 +3,11 @@ package rangarok.com.androidpbr.renderer
 import android.content.Context
 import android.graphics.BitmapFactory
 import android.opengl.GLES30
+import android.opengl.GLU
 import android.opengl.GLUtils
 import android.util.Log
 import glm_.mat4x4.Mat4
+import rangarok.com.androidpbr.ui.MainActivity
 import rangarok.com.androidpbr.utils.Shader
 import rangarok.com.androidpbr.utils.SkyBoxVertices
 import rangarok.com.androidpbr.utils.skyBoxFs
@@ -53,6 +55,11 @@ class Skybox {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, 0)
 
         Log.i(TAG, "init cubemapTexture:$cubeMapTexture")
+    }
+
+    fun initWithSkyboxTex(texId: Int) {
+        this.cubeMapTexture = texId
+        Log.i(TAG, "initWithSkyboxTex: $texId")
     }
 
     fun render(projection: Mat4, view: Mat4) {

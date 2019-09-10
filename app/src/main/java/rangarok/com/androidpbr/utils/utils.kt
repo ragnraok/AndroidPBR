@@ -21,6 +21,12 @@ fun genVAO(): Int {
     return vaoArray[0]
 }
 
+fun genFBO(): Int  {
+    val fboArray = intArrayOf(0)
+    GLES30.glGenFramebuffers(1, fboArray, 0)
+    return fboArray[0]
+}
+
 fun genBuffer(): Int {
     val vboArray = intArrayOf(0)
     GLES30.glGenBuffers(1, vboArray, 0)

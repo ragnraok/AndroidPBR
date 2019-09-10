@@ -1,5 +1,6 @@
 package rangarok.com.androidpbr.utils
 
+import glm_.glm
 import glm_.vec2.Vec2
 import glm_.vec3.Vec3
 import kotlin.math.cos
@@ -247,3 +248,13 @@ const val SCENE_MONKEY_MODEL = 2
 const val SCENE_DIRECT_LIGHT = 3
 const val SCENE_IRRADIANCE_IBL = 4
 const val SCENE_TEXTURE_SPHERE = 5
+
+val cubemapProjection = glm.perspective(glm.radians(90.0f), 1.0f, 0.1f, 10.0f)
+val cubemapViews = arrayOf(
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(1.0f,  0.0f,  0.0f), Vec3(0.0f, -1.0f,  0.0f)),
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(-1.0f,  0.0f,  0.0f), Vec3(0.0f, -1.0f,  0.0f)),
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,  1.0f,  0.0f), Vec3(0.0f,  0.0f,  1.0f)),
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f, -1.0f,  0.0f), Vec3(0.0f,  0.0f, -1.0f)),
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,  0.0f,  1.0f), Vec3(0.0f, -1.0f,  0.0f)),
+    glm.lookAt(Vec3(0.0f, 0.0f, 0.0f), Vec3(0.0f,  0.0f, -1.0f), Vec3(0.0f, -1.0f,  0.0f))
+)

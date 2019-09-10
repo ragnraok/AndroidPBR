@@ -9,11 +9,10 @@ import glm_.glm
 import glm_.mat3x3.Mat3
 import glm_.mat4x4.Mat4
 import glm_.vec3.Vec3
-import rangarok.com.androidpbr.brdf.EnvBRDFLookUpTexture
-import rangarok.com.androidpbr.brdf.IrradianceTexture
-import rangarok.com.androidpbr.brdf.RadianceTexture
+import rangarok.com.androidpbr.brdf.*
 import rangarok.com.androidpbr.renderer.ObjRender
 import rangarok.com.androidpbr.renderer.Skybox
+import rangarok.com.androidpbr.renderer.SkyboxCalcTex
 import rangarok.com.androidpbr.renderer.SphereRenderer
 import rangarok.com.androidpbr.utils.*
 
@@ -25,15 +24,19 @@ class SceneRenderer(private val context: Context) {
     private var pbrShader: Shader? = null
     private val sphereRenderer = SphereRenderer()
 
-    private val skybox = Skybox().apply { init(context) }
+    private var hdrTex = uploadTexture(context, "envs/newport_loft.png")
+    private var skyboxCalcTex = SkyboxCalcTex(hdrTex)
+
+    private val skybox = Skybox().apply { initWithSkyboxTex(skyboxCalcTex.texId()) }
 
     private val camera = Camera(Vec3(0, 1, 6))
 
     private var metallic = 0.5f
     private var roughness = 0.5f
 
-    private var irradianceTexture = IrradianceTexture(context)
-    private var radianceTexture = RadianceTexture(context)
+//    private var irradianceTexture = IrradianceTexture(context)
+    private var irradianceTexture = IrradianceCalcTexture(skyboxCalcTex.texId())
+    private var radianceTexture = RadianceCalcTexture(skyboxCalcTex.texId())
 //    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
     private var objRenderer =
@@ -215,13 +218,13 @@ class SceneRenderer(private val context: Context) {
 
     private fun initSphereTexture() {
         sphereAlbedoTexIds[0] =
-            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_basecolor.png")
+            uploadTexture(context, "gold/albedo.png")
         sphereNormalTexIds[0] =
-            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_normal.png")
+            uploadTexture(context, "gold/normal.png")
         sphereMetallicTexIds[0] =
-            uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_metallic.png")
-        sphereRoughnessTexIds[0] = uploadTexture(context, "gold-scuffed-Unreal-Engine/gold-scuffed_roughness.png")
-        sphereAoTexIds[0] = -1
+            uploadTexture(context, "gold/metallic.png")
+        sphereRoughnessTexIds[0] = uploadTexture(context, "gold/roughness.png")
+        sphereAoTexIds[0] = uploadTexture(context, "gold/ao.png")
 
         sphereAlbedoTexIds[1] =
             uploadTexture(context, "cavefloor1-Unreal-Engine/cavefloor1_Base_Color.png")

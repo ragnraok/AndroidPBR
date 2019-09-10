@@ -2,7 +2,11 @@ package rangarok.com.androidpbr.ui
 
 import android.Manifest
 import android.content.Intent
+import android.graphics.BitmapFactory
+import android.opengl.GLU
+import android.opengl.GLUtils
 import android.os.Bundle
+import android.util.Log
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import rangarok.com.androidpbr.R
@@ -40,6 +44,9 @@ class MainActivity : AppCompatActivity() {
         findViewById<Button>(R.id.monkey_scene_button).setOnClickListener {
             startActivity(Intent(this@MainActivity, ModelSceneUI::class.java))
         }
+
+//        val bitmap = BitmapFactory.decodeStream(assets.open("envs/newport_loft.png"))
+//        Log.i(TAG, "decode bitmap:[${bitmap?.width}, ${bitmap?.height}], config:${bitmap?.config}, internalformat:${GLUtils.getInternalFormat(bitmap)}")
 
     }
 
