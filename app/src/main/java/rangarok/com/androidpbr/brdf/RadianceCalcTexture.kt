@@ -25,8 +25,10 @@ class RadianceCalcTexture(cubeMapTexId: Int) {
         texId = texArray[0]
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
 
+        val radianceTextureSize = 128
+
         for (i in 0 until 6) {
-            GLES30.glTexImage2D(GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GLES30.GL_RGB16F, 128, 128, 0, GLES30.GL_RGB, GLES30.GL_FLOAT, null)
+            GLES30.glTexImage2D(GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GLES30.GL_RGB16F, radianceTextureSize, radianceTextureSize, 0, GLES30.GL_RGB, GLES30.GL_FLOAT, null)
         }
         GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
         setCubemapTexParam(true)
@@ -43,8 +45,8 @@ class RadianceCalcTexture(cubeMapTexId: Int) {
         GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fbo)
 
         for (mip in 0 until RadianceMipmapLevel) {
-            val mipWidth = 128 * 0.5.pow(mip.toDouble()).toInt()
-            val mipHeight =  128 * 0.5.pow(mip.toDouble()).toInt()
+            val mipWidth = radianceTextureSize * 0.5.pow(mip.toDouble()).toInt()
+            val mipHeight =  radianceTextureSize * 0.5.pow(mip.toDouble()).toInt()
             GLES30.glBindRenderbuffer(GLES30.GL_RENDERBUFFER, fbo)
             GLES30.glRenderbufferStorage(GLES30.GL_RENDERBUFFER, GLES30.GL_DEPTH_COMPONENT24, mipWidth, mipHeight)
 

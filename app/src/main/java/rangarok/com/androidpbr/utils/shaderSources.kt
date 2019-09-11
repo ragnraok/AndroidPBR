@@ -465,7 +465,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         vec3 irradiance = texture(irradianceMap, N).rgb;
         vec3 diffuse = irradiance * albedo;
         
-        const float MAX_RADIANCE_LOD = 6.0;
+        const float MAX_RADIANCE_LOD = $RadianceMipmapLevel.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
         vec3 envBrdf = EnvDFGLazarov(F0, metallic, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
@@ -552,7 +552,13 @@ const val skyBoxFs = """
     
     void main()
     {    
-        FragColor = texture(skybox, TexCoords);
+        vec3 color = texture(skybox, TexCoords).rgb;
+        // HDR tonemapping
+        color = color / (color + vec3(1.0));
+        // gamma correct
+        color = pow(color, vec3(1.0/2.2));
+    
+        FragColor = vec4(color, 1.0);
     }
 """
 
@@ -786,7 +792,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcsAndTextures = """
         vec3 irradiance = texture(irradianceMap, N).rgb;
         vec3 diffuse = irradiance * albedo;
         
-        const float MAX_RADIANCE_LOD = 6.0;
+        const float MAX_RADIANCE_LOD = $RadianceMipmapLevel.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
         vec3 envBrdf = EnvDFGLazarov(F0, roughness, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
@@ -835,7 +841,7 @@ const val CubeMapConversionFs = """
     const vec2 invAtan = vec2(0.1591, 0.3183);
     vec2 SampleSphericalMap(vec3 v)
     {
-        vec2 uv = vec2(atan(v.z, v.x), asin(v.y));
+        vec2 uv = vec2(atan(v.z, v.x), -asin(v.y));
         uv *= invAtan;
         uv += 0.5;
         return uv;
