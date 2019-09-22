@@ -20,14 +20,17 @@ class SkyboxCalcTex(hdrTexture: Int) {
         val texArray = intArrayOf(0)
         GLES30.glGenTextures(1, texArray, 0)
         texId = texArray[0]
+
+        val fbo = genFBO()
+        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, fbo)
         GLES30.glBindTexture(GLES30.GL_TEXTURE_CUBE_MAP, texId)
 
         for (i in 0 until 6) {
             GLES30.glTexImage2D(GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, 0, GLES30.GL_RGB16F, 512, 512, 0, GLES30.GL_RGB, GLES30.GL_FLOAT, null)
         }
         setCubemapTexParam()
+        GLES30.glGenerateMipmap(GLES30.GL_TEXTURE_CUBE_MAP)
 
-        val pbo = genFBO()
 
         shader.enable()
         shader.setInt("equirectangularMap", 0)
@@ -37,11 +40,10 @@ class SkyboxCalcTex(hdrTexture: Int) {
         GLES30.glBindTexture(GLES30.GL_TEXTURE_2D, hdrTexture)
 
         viewport(512, 512)
-        GLES30.glBindFramebuffer(GLES30.GL_FRAMEBUFFER, pbo)
 
         for (i in 0 until 6) {
             shader.setMat4("view", cubemapViews[i])
-            GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, texId, 0);
+            GLES30.glFramebufferTexture2D(GLES30.GL_FRAMEBUFFER, GLES30.GL_COLOR_ATTACHMENT0, GLES30.GL_TEXTURE_CUBE_MAP_POSITIVE_X + i, texId, 0)
             clearGL()
             cubeRenderer.render()
         }

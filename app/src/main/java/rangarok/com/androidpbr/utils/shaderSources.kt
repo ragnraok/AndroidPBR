@@ -465,7 +465,7 @@ val PbrWithSpecularRadianceIBLFAndEnvBrdCalcs = """
         vec3 irradiance = texture(irradianceMap, N).rgb;
         vec3 diffuse = irradiance * albedo;
         
-        const float MAX_RADIANCE_LOD = $RadianceMipmapLevel.0;
+        const float MAX_RADIANCE_LOD = ${RadianceMipmapLevel - 1}.0;
         vec3 radiance = textureLod(radianceMap, R, roughness * MAX_RADIANCE_LOD).rgb;
         vec3 envBrdf = EnvDFGLazarov(F0, metallic, max(dot(N, V), 0.0));
         vec3 specular = radiance * (F * envBrdf);
@@ -999,7 +999,7 @@ const val RadianceCalcFs = """
     
                 float mipLevel = roughness == 0.0 ? 0.0 : 0.5 * log2(saSample / saTexel); 
                 
-                prefilteredColor += textureLod(environmentMap, L, mipLevel).rgb * NdotL;
+                prefilteredColor += texture(environmentMap, L, mipLevel).rgb * NdotL;
                 totalWeight      += NdotL;
             }
         }

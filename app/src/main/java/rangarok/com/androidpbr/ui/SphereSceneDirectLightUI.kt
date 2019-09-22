@@ -5,7 +5,6 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import rangarok.com.androidpbr.R
 import rangarok.com.androidpbr.utils.SCENE_DIRECT_LIGHT
-import rangarok.com.androidpbr.utils.SCENE_SPHERE
 import kotlin.math.max
 
 class SphereSceneDirectLightUI : AppCompatActivity() {

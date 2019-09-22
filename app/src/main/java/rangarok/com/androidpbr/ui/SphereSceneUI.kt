@@ -5,8 +5,7 @@ import android.widget.SeekBar
 import androidx.appcompat.app.AppCompatActivity
 import rangarok.com.androidpbr.R
 import rangarok.com.androidpbr.utils.SCENE_IRRADIANCE_IBL
-import rangarok.com.androidpbr.utils.SCENE_SPHERE
-import rangarok.com.androidpbr.utils.SCENE_TEXTURE_SPHERE
+import rangarok.com.androidpbr.utils.SCENE_RADIANCE_SPHERE
 import kotlin.math.max
 
 class SphereSceneUI : AppCompatActivity() {
@@ -53,7 +52,7 @@ class SphereSceneUI : AppCompatActivity() {
         if (intent.getBooleanExtra(IRRADIANCE, false)) {
             drawView?.setRenderScene(SCENE_IRRADIANCE_IBL)
         } else {
-            drawView?.setRenderScene(SCENE_SPHERE)
+            drawView?.setRenderScene(SCENE_RADIANCE_SPHERE)
         }
     }
 

@@ -16,6 +16,7 @@ import rangarok.com.androidpbr.renderer.SkyboxCalcTex
 import rangarok.com.androidpbr.renderer.SphereRenderer
 import rangarok.com.androidpbr.utils.*
 
+// TODO: refactor code
 class SceneRenderer(private val context: Context) {
 
     private var sceneWidth = 0
@@ -24,7 +25,7 @@ class SceneRenderer(private val context: Context) {
     private var pbrShader: Shader? = null
     private val sphereRenderer = SphereRenderer()
 
-    private var hdrTex = uploadTexture(context, "envs/newport_loft.png")
+    private var hdrTex = uploadTexture(context, "envs/Arches_E_PineTree_3k.png")
     private var skyboxCalcTex = SkyboxCalcTex(hdrTex)
 
     private val skybox = Skybox().apply { initWithSkyboxTex(skyboxCalcTex.texId()) }
@@ -35,14 +36,17 @@ class SceneRenderer(private val context: Context) {
     private var roughness = 0.5f
 
 //    private var irradianceTexture = IrradianceTexture(context)
+//    private var radianceTexture = RadianceTexture(context)
+
     private var irradianceTexture = IrradianceCalcTexture(skyboxCalcTex.texId())
     private var radianceTexture = RadianceCalcTexture(skyboxCalcTex.texId())
+
 //    private var envBRDFLookUpTexture = EnvBRDFLookUpTexture()
 
     private var objRenderer =
         ObjRender(context.assets.open("monkey/monkey.obj"))
 
-    private var renderScene: Int = SCENE_SPHERE
+    private var renderScene: Int = SCENE_RADIANCE_SPHERE
 
     private var rotateDegree: Float = 0f
     private var spin: Boolean = false
@@ -86,7 +90,7 @@ class SceneRenderer(private val context: Context) {
         if (pbrShader != null) {
             if (renderScene == SCENE_MONKEY_MODEL) {
                 renderModelsScene(projection, view)
-            } else if (renderScene == SCENE_SPHERE || renderScene == SCENE_DIRECT_LIGHT || renderScene == SCENE_IRRADIANCE_IBL) {
+            } else if (renderScene == SCENE_RADIANCE_SPHERE || renderScene == SCENE_DIRECT_LIGHT || renderScene == SCENE_IRRADIANCE_IBL) {
                 renderSphereScene(projection, view)
             } else if (renderScene == SCENE_TEXTURE_SPHERE) {
                 renderTextureSphereScene(projection, view)
@@ -173,20 +177,24 @@ class SceneRenderer(private val context: Context) {
     }
 
     fun setMetallic(metallic: Float) {
-        if (metallic in 0.0..1.0) {
-            this.metallic = metallic
+        if (renderScene in listOf(SCENE_DIRECT_LIGHT, SCENE_IRRADIANCE_IBL, SCENE_RADIANCE_SPHERE)) {
+            if (metallic in 0.0..1.0) {
+                this.metallic = metallic
+            }
         }
     }
 
     fun setRoughness(roughness: Float) {
-        if (roughness in 0.0..1.0) {
-            this.roughness = roughness
+        if (renderScene in listOf(SCENE_DIRECT_LIGHT, SCENE_IRRADIANCE_IBL, SCENE_RADIANCE_SPHERE)) {
+            if (roughness in 0.0..1.0) {
+                this.roughness = roughness
+            }
         }
     }
 
     fun setRenderScene(scene: Int) {
         this.renderScene = scene
-        if (renderScene == SCENE_SPHERE) {
+        if (renderScene == SCENE_RADIANCE_SPHERE) {
             pbrShader = Shader(
                 PbrVs,
                 PbrWithSpecularRadianceIBLFAndEnvBrdCalcs

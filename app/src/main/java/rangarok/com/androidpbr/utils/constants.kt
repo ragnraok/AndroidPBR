@@ -243,7 +243,8 @@ const val metallicMapSlot = 5
 const val roughnessMapSlot = 6
 const val aoMapSlot = 7
 
-const val SCENE_SPHERE = 1
+//TODO: add scene show different metallic in the same times
+const val SCENE_RADIANCE_SPHERE = 1
 const val SCENE_MONKEY_MODEL = 2
 const val SCENE_DIRECT_LIGHT = 3
 const val SCENE_IRRADIANCE_IBL = 4

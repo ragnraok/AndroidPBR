@@ -8,7 +8,7 @@ import android.os.SystemClock
 
 fun clearGL() {
     GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT or GLES30.GL_DEPTH_BUFFER_BIT)
-    GLES30.glClearColor(0f, 0f, 0.0f, 1.0f)
+    GLES30.glClearColor(0.0f, 0f, 0.0f, 1.0f)
 }
 
 fun viewport(width: Int, height: Int) {

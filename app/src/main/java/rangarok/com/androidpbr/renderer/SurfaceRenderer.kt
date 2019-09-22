@@ -4,7 +4,7 @@ import android.content.Context
 import android.opengl.GLES30
 import android.opengl.GLSurfaceView
 import android.util.Log
-import rangarok.com.androidpbr.utils.SCENE_SPHERE
+import rangarok.com.androidpbr.utils.SCENE_RADIANCE_SPHERE
 import rangarok.com.androidpbr.ui.SceneRenderer
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
@@ -16,7 +16,7 @@ class SurfaceRenderer(private val context: Context) : GLSurfaceView.Renderer {
 
     private lateinit var sceneRenderer: SceneRenderer
 
-    private var renderScene = SCENE_SPHERE
+    private var renderScene = SCENE_RADIANCE_SPHERE
     private var surfaceCreated = false
     private var spin = false
 
